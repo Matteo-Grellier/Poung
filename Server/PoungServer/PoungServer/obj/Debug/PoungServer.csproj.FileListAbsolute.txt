@@ -1,0 +1,8 @@
+C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\bin\Debug\PoungServer.exe.config
+C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\bin\Debug\PoungServer.exe
+C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\bin\Debug\PoungServer.pdb
+C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\obj\Debug\PoungServer.csproj.AssemblyReference.cache
+C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\obj\Debug\PoungServer.csproj.SuggestedBindingRedirects.cache
+C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\obj\Debug\PoungServer.csproj.CoreCompileInputs.cache
+C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\obj\Debug\PoungServer.exe
+C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\obj\Debug\PoungServer.pdb
