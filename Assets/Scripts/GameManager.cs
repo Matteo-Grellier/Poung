@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public bool player1HasWin;
+    public bool gameHasStarted = false;
     [Header("Particles")]
     public ParticleSystem ballTrail;
     public BallControl ballController;
@@ -15,11 +17,9 @@ public class GameManager : MonoBehaviour
     public GameObject player1Paddle;
     public GameObject player1Goal;
     public int paddleSpeed;
-    [Header("Player 2")]
+    [Header("AI")]
     public GameObject player2Paddle;
     public GameObject player2Goal;
-
-    [Header("AI")]
     public float aiSpeed;
 
  

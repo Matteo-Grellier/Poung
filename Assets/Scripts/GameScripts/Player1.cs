@@ -22,7 +22,6 @@ public class Player1 : MonoBehaviour
     void Update () {
         if (Input.GetKey(moveUp))
         {
-            Debug.Log("PADDLE SPEED : " + gameManager.paddleSpeed);
             rb2d.velocity = new Vector2(0, gameManager.paddleSpeed);
         }
         else if (Input.GetKey(moveDown))

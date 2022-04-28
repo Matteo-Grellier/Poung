@@ -22,7 +22,6 @@ public class AI : MonoBehaviour
         Debug.Log(Mathf.Abs(gameManager.ball.transform.position.y-transform.position.y) > 1 && Mathf.Abs(gameManager.ball.transform.position.y-transform.position.y) < 1.5);
         if(gameManager.ball.transform.position.x > 5)
         {
-            Debug.Log("POURQUOI");
             moveAI();
         
         }else
@@ -32,11 +31,11 @@ public class AI : MonoBehaviour
     }
     private void moveAI(){
         
-            if(gameManager.ball.transform.position.y > transform.position.y-0.5f){
+            if(gameManager.ball.transform.position.y > transform.position.y+0.5){
                 rb2d.velocity = new Vector2(0, gameManager.aiSpeed);
                 Debug.Log("1");
             }
-            else if(gameManager.ball.transform.position.y < transform.position.y+0.5f){
+            else if(gameManager.ball.transform.position.y < transform.position.y){
                 rb2d.velocity = new Vector2(0, -gameManager.aiSpeed);
                 Debug.Log("2");
             }

@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class BallControl : MonoBehaviour {
     private GameManager gameManager;
+    private Goal goal;
     public Vector3 startPosition;
     private float currentSpeed = 2;
     private float temps;
     public Rigidbody2D rb2d;
+    private float x;
     private float accelerationRate = 0.5f;
     private float maxSpeed = 15f;
 
@@ -17,12 +19,22 @@ public class BallControl : MonoBehaviour {
         IEnumerator passiveMe(int secs)
         {
             yield return new WaitForSeconds(secs);
-            Debug.Log("BALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
             gameManager.ballTrail.Play();
-
-            float x = Random.Range(0, 2) == 0 ? 1 : -1;
-            float y = Random.Range(-0, 2) == 0 ? 1 : -1;
-            rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, y);
+            if(gameManager.player1HasWin == false)
+            {
+                x = -1;
+            }
+            else if (gameManager.player1HasWin == true)
+            {
+                x = 1;
+            }
+            if (gameManager.gameHasStarted == false)
+            {
+                Debug.Log("GAMMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                x = Random.Range(0, 2) == 0 ? 1 : -1;
+                gameManager.gameHasStarted = true;
+            }
+            rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, 0);
         }
         
         
@@ -31,9 +43,9 @@ public class BallControl : MonoBehaviour {
     {
         rb2d.velocity = Vector2.zero;
         currentSpeed = 2;
-        GameObject.Find("Ball").transform.position = new Vector3(0, 0, 0);
-        GameObject.Find("Player1").transform.position = new Vector3(-8.27f, 0, 0);
-        GameObject.Find("Player2").transform.position = new Vector3(8.26f, 0, 0);
+        gameManager.ball.transform.position = new Vector3(0, 0, 0);
+        gameManager.player1Paddle.transform.position = new Vector3(-8.27f, 0, 0);
+        gameManager.player2Paddle.transform.position = new Vector3(8.26f, 0, 0);
         gameManager.Launch();
     }
     private void Update() {
@@ -107,6 +119,7 @@ public class BallControl : MonoBehaviour {
     }
 
     private void Start() {
+        goal = GameObject.Find("Player1Goal").GetComponent<Goal>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 }
