@@ -16,6 +16,8 @@ namespace PoungServer
 
         // liste de tous les joueurs
         public static Dictionary<int, Client> clients = new Dictionary<int, Client>();
+        public delegate void PacketHandler(int _fromClient, Packet _packet);
+        public static Dictionary<int, PacketHandler> packetHandlers;
 
         private static TcpListener tcpListener;
 
@@ -64,6 +66,12 @@ namespace PoungServer
             {
                 clients.Add(i, new Client(i));
             }
+
+            packetHandlers = new Dictionary<int, PacketHandler>()
+            {
+                { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived }
+            };
+            Console.WriteLine("Initialized packets.");
         }
     }
 }

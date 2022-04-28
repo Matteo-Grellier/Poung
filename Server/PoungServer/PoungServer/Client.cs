@@ -26,6 +26,7 @@ namespace PoungServer
 
             private readonly int id;
             private NetworkStream stream;
+            private Packet receiveData;
             private byte[] receiveBuffer;
 
             public TCP(int _id) // constructeur de TCP
@@ -41,6 +42,7 @@ namespace PoungServer
 
                 stream = socket.GetStream();    // choppe le stream
 
+                receiveData = new Packet();
                 receiveBuffer = new byte[dataBufferSize];
 
                 // Débute une opération de lecture asynchrone et apelle "ReceiveCallback" quand l'opération est terminée
@@ -78,7 +80,7 @@ namespace PoungServer
                     byte[] _data = new byte[_byteLenght];
                     Array.Copy(receiveBuffer, _data, _byteLenght);  // met les infos reçus dans "_data"
 
-                    // TODO : handle data
+                    receiveData.Reset(HandleData(_data));
 
                     // Débute une opération de lecture asynchrone et apelle "ReceiveCallback" quand l'opération est terminée ( recommence quoi )
                     stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
@@ -91,6 +93,55 @@ namespace PoungServer
 
                 }
             }
+
+
+            private bool HandleData(byte[] _data)
+            {
+                int _packetLenght = 0;
+
+                receiveData.SetBytes(_data);
+
+                if (receiveData.UnreadLength() >= 4)
+                {
+                    _packetLenght = receiveData.ReadInt();
+                    if (_packetLenght <= 0)
+                    {
+                        return true;
+                    }
+                }
+
+                while (_packetLenght > 0 && _packetLenght <= receiveData.UnreadLength())
+                {
+                    byte[] _packetBytes = receiveData.ReadBytes(_packetLenght);
+                    ThreadManager.ExecuteOnMainThread(() =>
+                    {
+                        using (Packet _packet = new Packet(_packetBytes))
+                        {
+                            int _packetId = _packet.ReadInt();
+                            Server.packetHandlers[_packetId](id, _packet);
+                        }
+                    });
+
+                    _packetLenght = 0;
+
+                    if (receiveData.UnreadLength() >= 4)
+                    {
+                        _packetLenght = receiveData.ReadInt();
+                        if (_packetLenght <= 0)
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                if (_packetLenght <= 1)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
         }
     }
 }

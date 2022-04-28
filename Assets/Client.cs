@@ -16,6 +16,9 @@ public class Client : MonoBehaviour
     public int myId = 0;
     public TCP tcp;
 
+    private delegate void PacketHandler(Packet _packet);
+    private static Dictionary<int, PacketHandler> packetHandlers;
+
     private void Awake()   // à l'instenciation
     {
         if (instance == null)   // si y'a pas d'instance dit que celle ci est l'instance
@@ -36,6 +39,7 @@ public class Client : MonoBehaviour
 
     public void ConnectToServer()
     {
+        InitializeClientData();
         tcp.Connect();
     }
 
@@ -44,6 +48,7 @@ public class Client : MonoBehaviour
         public TcpClient socket;
 
         private NetworkStream stream;
+        private Packet receiveData;
         private byte[] receiveBuffer;
 
         public void Connect()
@@ -69,7 +74,24 @@ public class Client : MonoBehaviour
 
             stream = socket.GetStream();
 
+            receiveData = new Packet();
+
             stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
+        }
+
+        public void SendData(Packet _packet)
+        {
+            try
+            {
+                if ( socket != null )
+                {
+                    stream.BeginWrite(_packet.ToArray(), 0, _packet.Length(), null, null);
+                }
+            }
+            catch ( Exception _ex)
+            {
+                Debug.Log($"Error sending data to server via TCP: {_ex}");
+            }
         }
 
         private void ReceiveCallback(IAsyncResult _result)
@@ -86,7 +108,7 @@ public class Client : MonoBehaviour
                 byte[] _data = new byte[_byteLenght];
                 Array.Copy(receiveBuffer, _data, _byteLenght);  // met les infos reçus dans "_data"
 
-                // TODO : handle data
+                receiveData.Reset(HandleData(_data));
 
                 // Débute une opération de lecture asynchrone et apelle "ReceiveCallback" quand l'opération est terminée ( recommence quoi )
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
@@ -97,6 +119,63 @@ public class Client : MonoBehaviour
                 // TODO: disconnect
             }
         }
+
+        private bool HandleData(byte[] _data)
+        {
+            int _packetLenght = 0;
+
+            receiveData.SetBytes(_data);
+
+            if (receiveData.UnreadLength() >= 4)
+            {
+                _packetLenght = receiveData.ReadInt();
+                if ( _packetLenght <= 0)
+                {
+                    return true;
+                }
+            }
+
+            while (_packetLenght > 0 && _packetLenght <= receiveData.UnreadLength())
+            {
+                byte[] _packetBytes = receiveData.ReadBytes(_packetLenght);
+                ThreadManager.ExecuteOnMainThread(() =>
+                {
+                    using (Packet _packet = new Packet(_packetBytes))
+                    {
+                        int _packetId = _packet.ReadInt();
+                        packetHandlers[_packetId](_packet);
+                    }
+                });
+
+                _packetLenght = 0;
+
+                if (receiveData.UnreadLength() >= 4)
+                {
+                    _packetLenght = receiveData.ReadInt();
+                    if ( _packetLenght <= 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            if ( _packetLenght <= 1)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+    }
+
+    private void InitializeClientData()
+    {
+        packetHandlers = new Dictionary<int, PacketHandler>()
+        {
+            { (int)ServerPackets.welcome, ClientHandle.Welcome },
+        };
+        Debug.Log("Initialize packets.");
     }
 
 }
