@@ -5,8 +5,8 @@ using UnityEngine;
 public class Goal : MonoBehaviour
 {
     private GameManager gameManager;
-    public Transform sparkleExplosion;
     public bool isPlayer1Goal;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ball")
@@ -14,11 +14,13 @@ public class Goal : MonoBehaviour
             if (!isPlayer1Goal)
             {
                 GameObject.Find("GameManager").GetComponent<GameManager>().Player1Scored();
+                gameManager.player1HasWin = true;
                 gameManager.Reset();
             }
             else
             {
                 GameObject.Find("GameManager").GetComponent<GameManager>().Player2Scored();
+                gameManager.player1HasWin = false;
                 gameManager.Reset();
             }
             
