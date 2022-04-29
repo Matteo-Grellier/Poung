@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PoungGameAI.unity
     guid: 210c0a0e78d245e4aa7b6b87c92e7ed4
+  - enabled: 1
+    path: Assets/Scenes/VictoryOnline.unity
+    guid: f6d5ff26d23aedf488d98b7b8a13f3a1
   m_configObjects: {}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -27,32 +28,40 @@ public class GameManager : MonoBehaviour
     public GameObject Player1Text;
     public GameObject Player2Text;
 
-    private int Player1Score;
-    private int Player2Score;
+    public int Player1Score;
+    public int Player2Score;
+
+    public static string VictoryText;
+    public void EndGame()
+    {
+        if (Player1Score == 5)
+        {
+            SceneManager.LoadScene("VictoryOnline");
+            VictoryText = "Player 1 Wins!";
+        }
+        else if (Player2Score == 5)
+        {
+            SceneManager.LoadScene("VictoryOnline");
+            VictoryText = "Player 2 Wins!";
+        }
+    }
 
     public void Player1Scored(){
         Debug.Log("Player 1 Scored");
         Player1Score++;
-
+        
         Player1Text.GetComponent<TextMeshProUGUI>().text = Player1Score.ToString();
     }
     public void Player2Scored(){
         Player2Score++;
         Player2Text.GetComponent<TextMeshProUGUI>().text = Player2Score.ToString();
     }
-    public void EndGame(){
-        Debug.Log("Game Over");
-        Player1Score = 0;
-        Player2Score = 0;
-        Player1Text.GetComponent<TextMeshProUGUI>().text = Player1Score.ToString();
-        Player2Text.GetComponent<TextMeshProUGUI>().text = Player2Score.ToString();
-    }
     private void Update() {
-        if(Player1Score == 5){
-            EndGame();
-        }
-        if(Player2Score == 5){
-            EndGame();
+
+        EndGame();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Player2Score = 5;
         }
         if(Input.GetKeyDown(KeyCode.Space)){
             Reset();
@@ -61,7 +70,6 @@ public class GameManager : MonoBehaviour
             Reset();
         }
     }
-
     public void Launch(){
         ballController.ShotBall();
     }
