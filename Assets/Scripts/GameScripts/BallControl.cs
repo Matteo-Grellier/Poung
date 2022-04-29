@@ -35,6 +35,10 @@ public class BallControl : MonoBehaviour {
                 gameManager.gameHasStarted = true;
             }
             rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, 0);
+
+            float step = currentSpeed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(x, 0, 0), step);
+
         }
         
         

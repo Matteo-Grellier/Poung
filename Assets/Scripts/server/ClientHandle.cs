@@ -24,7 +24,6 @@ public class ClientHandle : MonoBehaviour
         string _username = _packet.ReadString();
         Vector3 _position = _packet.ReadVector3();
 
-        //--------------------------------------------------------------------------------------------------------------ici aussi-------
-        GameManager1.instance.SpawnPlayer(_id, _username, _position);
+        GameManager.instance.SpawnPlayer(_id, _username, _position);
     }
 }

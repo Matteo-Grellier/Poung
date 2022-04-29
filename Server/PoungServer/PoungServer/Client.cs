@@ -188,7 +188,14 @@ namespace PoungServer
 
         public void SendIntoGame(string _playerName) 
         {
-            player = new Player(id, _playerName, new Vector3(0, 0, 0)); // 0 ici parce que la position de base est donc 0 pour le moment 
+            if ( id == 1)
+            {
+                player = new Player(id, _playerName, new Vector3(-8.27f, 0, 0)); // player 1 donc à gauche
+            }
+            else
+            {
+                player = new Player(id, _playerName, new Vector3(8.27f, 0, 0)); // player 2 donc à droite
+            }
 
             foreach (Client _client in Server.clients.Values) // "récupère de tous les joeurs"
             {

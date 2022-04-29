@@ -1001,11 +1001,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 2018712076}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1617ea228e35ebc43b3386a0ae4da4a9, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a56f2961a414f34dbdb2dd2a2d0ad04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localPlayerPrefab: {fileID: 8095706035744927788, guid: 033f1e5a36ad20546aa27b089be45224, type: 3}
-  playerPrefab: {fileID: 8095706035744927788, guid: 9d91c4efab50cd94c93b55c032b9414e, type: 3}
+  localPlayerPrefab: {fileID: 0}
+  playerPrefab: {fileID: 0}
+  player1HasWin: 0
+  gameHasStarted: 0
+  ballTrail: {fileID: 0}
+  ballController: {fileID: 0}
+  ball: {fileID: 0}
+  player1Paddle: {fileID: 0}
+  player1Goal: {fileID: 0}
+  paddleSpeed: 0
+  player2Paddle: {fileID: 0}
+  player2Goal: {fileID: 0}
+  aiSpeed: 0
+  Player1Text: {fileID: 0}
+  Player2Text: {fileID: 0}
+  Player1Score: 0
+  Player2Score: 0
 --- !u!4 &2018712078
 Transform:
   m_ObjectHideFlags: 0

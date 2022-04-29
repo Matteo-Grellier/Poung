@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
-    private Scene loadAIGame;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +22,6 @@ public class MainMenu : MonoBehaviour
     }
     public void PlayGamevsPlayers()
     {
-        loadAIGame = SceneManager.GetSceneByName("PoungGame2players");
         SceneManager.LoadScene("PoungGame2players");
     }
     public void QuitGame()
