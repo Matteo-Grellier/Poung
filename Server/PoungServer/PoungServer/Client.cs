@@ -5,13 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.Numerics;
 
 namespace PoungServer
 {
     internal class Client
     {
         public static int dataBufferSize = 4096;
+
         public int id;
+        public Player player;
         public TCP tcp;
         public UDP udp;
 
@@ -160,7 +163,6 @@ namespace PoungServer
             public void Connect(IPEndPoint _endPoint)
             {
                 endPoint = _endPoint;
-                ServerSend.UDPTest(id);
             }
 
             public void SendData(Packet _packet)
@@ -181,6 +183,30 @@ namespace PoungServer
                         Server.packetHandlers[_packetId](id, _packet);
                     }
                 });
+            }
+        }
+
+        public void SendIntoGame(string _playerName) 
+        {
+            player = new Player(id, _playerName, new Vector3(0, 0, 0)); // 0 ici parce que la position de base est donc 0 pour le moment 
+
+            foreach (Client _client in Server.clients.Values) // "récupère de tous les joeurs"
+            {
+                if (_client.player != null)
+                {
+                    if (_client.id != id)
+                    {
+                        ServerSend.SpawnPlayer(id, _client.player); // et envoie au joueur les infos de tous les autres players
+                    }
+                }
+            }
+
+            foreach (Client _client in Server.clients.Values) // envoie des infos a tous les autres players (et à lui même)
+            {
+                if (_client.player != null)
+                {
+                    ServerSend.SpawnPlayer(_client.id, player); // et envoie au joueur les infos de tous les autres players
+                }
             }
         }
     }
