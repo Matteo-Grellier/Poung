@@ -78,7 +78,7 @@ namespace PoungServer
                     int _byteLenght = stream.EndRead(_result); // Attend que la requête asynchrone en attente se termine
                     if ( _byteLenght <= 0) // si "_byteLenght" est vide : disconnect
                     {
-                        // TODO : disconnect
+                        Server.clients[id].Disconnect();
                         return;
                     }
 
@@ -94,7 +94,7 @@ namespace PoungServer
                 catch (Exception _ex)
                 {
                     Console.WriteLine($"Error, receiving TCP data : {_ex}");
-                    // TODO : disconnect
+                    Server.clients[id].Disconnect();
 
                 }
             }
@@ -147,6 +147,15 @@ namespace PoungServer
                 return false;
             }
 
+            public void Disconnect()
+            {
+                socket.Close();
+                stream = null;
+                receiveData = null;
+                receiveBuffer = null;
+                socket = null;
+            }
+
         }
 
         public class UDP
@@ -184,6 +193,11 @@ namespace PoungServer
                     }
                 });
             }
+
+            public void Disconnect()
+            {
+                endPoint = null;
+            }
         }
 
         public void SendIntoGame(string _playerName) 
@@ -215,6 +229,15 @@ namespace PoungServer
                     ServerSend.SpawnPlayer(_client.id, player); // et envoie au joueur les infos de tous les autres players
                 }
             }
+        }
+        private void Disconnect()
+        {
+            Console.WriteLine($"{tcp.socket.Client.RemoteEndPoint} has diconnected");
+
+            player = null;
+
+            tcp.Disconnect();
+            udp.Disconnect();
         }
     }
 }
