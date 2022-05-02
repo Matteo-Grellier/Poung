@@ -287,7 +287,7 @@ public class Client : MonoBehaviour
         Debug.Log("Initialize packets.");
     }
 
-    private void Disconnect()
+    public void Disconnect()
     {
         if (isConnected)
         {

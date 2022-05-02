@@ -9,7 +9,8 @@ public class UIManager : MonoBehaviour
 
     public GameObject startMenu;
     public InputField usernameField;
-
+    public InputField ipField;
+    public Text ipText;
 
     private void Awake()   // à l'instenciation
     {
@@ -26,8 +27,10 @@ public class UIManager : MonoBehaviour
 
     public void ConnectToServer()
     {
+        Client.instance.ip = ipText.text;
         startMenu.SetActive(false);
         usernameField.interactable = false;
+        ipField.interactable = false;
         Client.instance.ConnectToServer();
     }
 }
