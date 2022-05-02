@@ -495,7 +495,7 @@ MonoBehaviour:
   paddleSpeed: 10
   player2Paddle: {fileID: 1278287425}
   player2Goal: {fileID: 2013435285}
-  aiSpeed: 10
+  aiSpeed: 40
   Player1Text: {fileID: 1265528438}
   Player2Text: {fileID: 179796460}
   Player1Score: 0
@@ -1180,6 +1180,10 @@ PrefabInstance:
       propertyPath: rb2d
       value: 
       objectReference: {fileID: 478502773}
+    - target: {fileID: 877768649937360535, guid: 41651ff510d586646b1c87b08839128c, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4070846370439507478, guid: 41651ff510d586646b1c87b08839128c, type: 3}
       propertyPath: m_Name
       value: Ball
