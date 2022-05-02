@@ -26,11 +26,11 @@ public class GameManager : MonoBehaviour
     public GameObject ball;
 
     [Header("Player 1")]
-    public GameObject player1Paddle;
+    // public GameObject player1Paddle;
     public GameObject player1Goal;
     public int paddleSpeed;
     [Header("AI")]
-    public GameObject player2Paddle;
+    // public GameObject player2Paddle;
     public GameObject player2Goal;
     public float aiSpeed;
 
@@ -57,17 +57,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void Player1Scored(){
+    public void Player1Scored()
+    {
         Debug.Log("Player 1 Scored");
         Player1Score++;
         
         Player1Text.GetComponent<TextMeshProUGUI>().text = Player1Score.ToString();
     }
-    public void Player2Scored(){
+
+    public void Player2Scored()
+    {
         Player2Score++;
         Player2Text.GetComponent<TextMeshProUGUI>().text = Player2Score.ToString();
     }
-    private void Update() {
+
+    private void Update() 
+    {
 
         EndGame();
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -81,21 +86,28 @@ public class GameManager : MonoBehaviour
             Reset();
         }
     }
-    public void Launch(){
+
+    public void Launch()
+    {
         ballController.ShotBall();
     }
 
-    public void Reset(){
+    public void Reset()
+    {
         ballTrail.Stop();
         ballController.ResetAllPositions();
     }
 
-    private void Start() {
+    private void Start() 
+    {
         ballController = ball.GetComponent<BallControl>();
         ballTrail.Stop();
 
         // stop particles from playing
-        Launch();
+        if (SceneManager.GetActiveScene().name != "PoungOnline")
+        {
+            Launch();
+        }
 
         ballController = ball.GetComponent<BallControl>();
     }
@@ -125,6 +137,7 @@ public class GameManager : MonoBehaviour
         else
         {
             _player = Instantiate(playerPrefab, _position, new Quaternion(0, 0, 0, 0) );
+            Launch();
         }
 
         _player.GetComponent<PlayerManager>().id = _id;

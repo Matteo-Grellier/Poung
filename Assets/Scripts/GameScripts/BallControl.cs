@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BallControl : MonoBehaviour {
     private GameManager gameManager;
@@ -14,7 +15,9 @@ public class BallControl : MonoBehaviour {
     private float maxSpeed = 15f;
 
     public void ShotBall(){
-        Debug.Log("Ball Launched");
+
+        
+        // Debug.Log("Ball Launched");
         StartCoroutine(passiveMe(4));
         IEnumerator passiveMe(int secs)
         {
@@ -28,28 +31,28 @@ public class BallControl : MonoBehaviour {
             {
                 x = 1;
             }
+
             if (gameManager.gameHasStarted == false)
             {
-                Debug.Log("GAMMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                // Debug.Log("GAMMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 x = Random.Range(0, 2) == 0 ? 1 : -1;
                 gameManager.gameHasStarted = true;
             }
+            
             rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, 0);
 
             float step = currentSpeed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(x, 0, 0), step);
-
         }
-        
-        
     }
+
     public void ResetAllPositions()
     {
         rb2d.velocity = Vector2.zero;
         currentSpeed = 2;
         gameManager.ball.transform.position = new Vector3(0, 0, 0);
-        gameManager.player1Paddle.transform.position = new Vector3(-8.27f, 0, 0);
-        gameManager.player2Paddle.transform.position = new Vector3(8.26f, 0, 0);
+        // gameManager.player1Paddle.transform.position = new Vector3(-8.27f, 0, 0);
+        // gameManager.player2Paddle.transform.position = new Vector3(8.26f, 0, 0);
         gameManager.Launch();
     }
     private void Update() {
