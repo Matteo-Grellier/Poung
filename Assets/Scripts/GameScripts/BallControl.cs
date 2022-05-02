@@ -54,14 +54,11 @@ public class BallControl : MonoBehaviour {
     private void Start() {
         goal = GameObject.Find("Player1Goal").GetComponent<Goal>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        rb2d = GetComponent<Rigidbody2D>();
     }
     
     private void FixedUpdate()
-    {
-        rb2d = FindObjectOfType<Rigidbody2D>();
-        gameManager = FindObjectOfType<GameManager>();
-        rb2d.velocity = rb2d.velocity.normalized * currentSpeed;
-        
+    {  
         temps += Time.deltaTime;
         if (temps > 1f)
         {
@@ -71,6 +68,7 @@ public class BallControl : MonoBehaviour {
     }
     private void Update()
     {
+        rb2d.velocity = rb2d.velocity.normalized * currentSpeed;
     }
     public void ShotBall(){
         Debug.Log("Ball Launched");
