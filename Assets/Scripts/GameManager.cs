@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public ParticleSystem ballTrail;
     public BallControl ballController;
     [Header("Ball")]
+    public float maxSpeed = 15f;
     public GameObject ball;
 
     [Header("Player 1")]
