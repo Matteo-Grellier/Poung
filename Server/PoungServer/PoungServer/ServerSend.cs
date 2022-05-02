@@ -87,6 +87,17 @@ namespace PoungServer
                 SendTCPData(_toClient, _packet); // on utilise tcp parce que ça arrive qu'une fois et dcp on veut pas perdre le packet
             }
         }
+
+        public static void PlayerPosition(Player _player)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.playerPosition)) 
+            {
+                _packet.Write(_player.id);
+                _packet.Write(_player.position);
+
+                SendUDPDataToAll(_packet); 
+            }
+        }
         #endregion
     }
 }
