@@ -6,3 +6,6 @@ C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\obj\Debug\P
 C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\obj\Debug\PoungServer.csproj.CoreCompileInputs.cache
 C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\obj\Debug\PoungServer.exe
 C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\obj\Debug\PoungServer.pdb
+C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\lewis\Documents\GitHub\Poung\Server\PoungServer\PoungServer\obj\Debug\PoungServer.csproj.CopyComplete

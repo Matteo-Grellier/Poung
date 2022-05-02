@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace PoungServer
 {
@@ -18,15 +19,19 @@ namespace PoungServer
             {
                 Console.WriteLine($"Player \"{_username}\" (ID: {_fromClient}) has assumed the wrong client ID ({_clientIdCheck})!");
             }
-
-            // TODO: send player into game
+            Server.clients[_fromClient].SendIntoGame(_username); // spawn le player
         }
 
-        public static void UDPTestReceived(int _fromClient, Packet _packet)
+        public static void PlayerMovement(int _fromClient, Packet _packet)
         {
-            string _msg = _packet.ReadString();
+            bool[] _inputs = new bool[_packet.ReadInt()];
+            for (int i = 0; i < _inputs.Length; i++)
+            {
+                _inputs[i] = _packet.ReadBool();
+            }
 
-            Console.WriteLine($"Received packet via UDP. Contains message: {_msg}");
+            Server.clients[_fromClient].player.SetInput(_inputs);
         }
+
     }
 }

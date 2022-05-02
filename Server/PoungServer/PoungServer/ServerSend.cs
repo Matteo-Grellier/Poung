@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace PoungServer
 {
@@ -75,13 +76,26 @@ namespace PoungServer
             }
         }
 
-        public static void UDPTest(int _toClient)
+        public static void SpawnPlayer(int _toClient, Player _player)
         {
-            using (Packet _packet = new Packet((int)ServerPackets.udpTest))
+            using (Packet _packet = new Packet((int)ServerPackets.spawnPlayer)) // créé un packet spawnPlayer
             {
-                _packet.Write("A test packet for UDP.");
+                _packet.Write(_player.id);
+                _packet.Write(_player.username);
+                _packet.Write(_player.position);
 
-                SendUDPData(_toClient, _packet);
+                SendTCPData(_toClient, _packet); // on utilise tcp parce que ça arrive qu'une fois et dcp on veut pas perdre le packet
+            }
+        }
+
+        public static void PlayerPosition(Player _player)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.playerPosition)) 
+            {
+                _packet.Write(_player.id);
+                _packet.Write(_player.position);
+
+                SendUDPDataToAll(_packet); 
             }
         }
         #endregion

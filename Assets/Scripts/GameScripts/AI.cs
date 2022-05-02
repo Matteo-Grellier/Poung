@@ -32,12 +32,12 @@ public class AI : MonoBehaviour
     private void moveAI(){
         
             if(gameManager.ball.transform.position.y > transform.position.y+0.5){
-                rb2d.velocity = new Vector2(0, gameManager.aiSpeed);
-                Debug.Log("1");
+                float step = gameManager.aiSpeed * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, boundY, 0), step);
             }
             else if(gameManager.ball.transform.position.y < transform.position.y){
-                rb2d.velocity = new Vector2(0, -gameManager.aiSpeed);
-                Debug.Log("2");
+                float step = gameManager.aiSpeed * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, boundY, 0), -step);
             }
             else{
                 rb2d.velocity = new Vector2(0, 0);

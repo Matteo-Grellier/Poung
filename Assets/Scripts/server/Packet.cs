@@ -11,14 +11,17 @@ using UnityEngine;
     public enum ServerPackets
     {
         welcome = 1,
-        udpTest
+        spawnPlayer,
+        playerPosition
+
     }
 
     /// <summary>Sent from client to server.</summary>
     public enum ClientPackets
     {
         welcomeReceived = 1,
-        udpTestReceived
+        playerMovement
+
     }
 
     public class Packet : IDisposable
@@ -162,6 +165,16 @@ using UnityEngine;
             Write(_value.Length); // Add the length of the string to the packet
             buffer.AddRange(Encoding.ASCII.GetBytes(_value)); // Add the string itself
         }
+
+        /// <summary>Adds a Vector3 to the packet.</summary>
+        /// <param name="_value">The Vector3 to add.</param>
+        public void Write(Vector3 _value)
+        {
+            Write(_value.x);
+            Write(_value.y);
+            Write(_value.z);
+        }
+
         #endregion
 
         #region Read Data
@@ -333,6 +346,12 @@ using UnityEngine;
                 throw new Exception("Could not read value of type 'string'!");
             }
         }
+
+        public Vector3 ReadVector3(bool _moveReadPos = true)
+        {
+            return new Vector3(ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
+        }
+        
         #endregion
 
         private bool disposed = false;
