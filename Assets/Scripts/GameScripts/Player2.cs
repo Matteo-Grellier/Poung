@@ -11,10 +11,11 @@ public class Player2 : MonoBehaviour
     public KeyCode moveUp = KeyCode.UpArrow;
     public KeyCode moveDown = KeyCode.DownArrow;
     private float speed = 4.5f;
-    public float boundY;
+    private float boundY = 3;
     // Start is called before the first frame update
     void Start()
     {
+
         rb2d = GetComponent<Rigidbody2D>();
     }
 
@@ -23,11 +24,13 @@ public class Player2 : MonoBehaviour
     {
         if (Input.GetKey(moveUp))
         {
-            rb2d.velocity = new Vector2(0, speed);
+            float step = gameManager.aiSpeed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, boundY, 0), step);
         }
         else if (Input.GetKey(moveDown))
         {
-            rb2d.velocity = new Vector2(0, -speed);
+            float step = gameManager.aiSpeed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, boundY, 0), -step);
         }
         else
         {

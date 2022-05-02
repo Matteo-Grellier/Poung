@@ -22,11 +22,13 @@ public class Player1 : MonoBehaviour
     void Update () {
         if (Input.GetKey(moveUp))
         {
-            rb2d.velocity = new Vector2(0, gameManager.paddleSpeed);
+            float step = gameManager.paddleSpeed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, boundY, 0), step);
         }
         else if (Input.GetKey(moveDown))
         {
-            rb2d.velocity = new Vector2(0, -gameManager.paddleSpeed);
+            float step = gameManager.paddleSpeed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, boundY, 0), -step);
         }
         else
         {
