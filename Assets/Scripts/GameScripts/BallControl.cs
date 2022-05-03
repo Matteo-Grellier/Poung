@@ -21,8 +21,10 @@ public class BallControl : MonoBehaviour {
         //   col.collider is the racket's collider
 
         // Hit the left Racket?
+        //MainCamera.GetComponent<RipplePostProcessor>().ShockWave();
         if (col.gameObject.name == "Player1")
         {
+            
             // Calculate hit Factor
             float y = hitFactor(transform.position,
                                 col.transform.position,
@@ -68,6 +70,7 @@ public class BallControl : MonoBehaviour {
     }
     private void Update()
     {
+
         rb2d.velocity = rb2d.velocity.normalized * currentSpeed;
     }
     public void ShotBall(){
