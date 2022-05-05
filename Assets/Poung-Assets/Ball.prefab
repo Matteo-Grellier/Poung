@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 877768649055679361}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.003, y: -0.01, z: -1}
+  m_LocalPosition: {x: 0.02, y: -0.03, z: -1}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 4673187307283080596}
@@ -659,15 +659,15 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 0
-    angle: 0
+    type: 4
+    angle: 18.14
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 0
+    radiusThickness: 1
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: -0.17, y: 0.32, z: 1}
+    m_Scale: {x: -0.17, y: 0.32, z: 0}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
@@ -803,7 +803,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
     arc:
-      value: 0
+      value: 14.2
       mode: 0
       spread: 0
       speed:
@@ -1303,24 +1303,24 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.1628089, g: 0.3844595, b: 0.9506347, a: 1}
-        key1: {r: 0.041651815, g: 0.9811321, b: 0.041672423, a: 1}
-        key2: {r: 0.7375085, g: 0.8867924, b: 0.25516194, a: 0}
+        key0: {r: 1, g: 0, b: 0.009994984, a: 1}
+        key1: {r: 0.9056604, g: 0.26881927, b: 0, a: 1}
+        key2: {r: 0.8962264, g: 0.6365086, b: 0.15641688, a: 0}
         key3: {r: 1, g: 1, b: 1, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
-        ctime0: 11951
-        ctime1: 27949
-        ctime2: 49537
+        ctime0: 13878
+        ctime1: 33153
+        ctime2: 57247
         ctime3: 65535
         ctime4: 0
         ctime5: 0
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 65535
+        atime1: 40478
         atime2: 0
         atime3: 0
         atime4: 0
@@ -1328,7 +1328,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_NumColorKeys: 4
+        m_NumColorKeys: 3
         m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
