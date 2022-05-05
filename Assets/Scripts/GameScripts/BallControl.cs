@@ -10,6 +10,7 @@ public class BallControl : MonoBehaviour {
     private float currentSpeed = 2;
     private float temps;
     private float x;
+    public bool leftPaddleHasTouch = false;
     private float accelerationRate = 0.5f;
 
     void OnCollisionEnter2D(Collision2D col)
@@ -21,8 +22,10 @@ public class BallControl : MonoBehaviour {
         //   col.collider is the racket's collider
 
         // Hit the left Racket?
+        //MainCamera.GetComponent<RipplePostProcessor>().ShockWave();
         if (col.gameObject.name == "Player1")
         {
+            leftPaddleHasTouch = true;
             // Calculate hit Factor
             float y = hitFactor(transform.position,
                                 col.transform.position,
@@ -38,6 +41,7 @@ public class BallControl : MonoBehaviour {
         // Hit the right Racket?
         if (col.gameObject.name == "Player2")
         {
+            leftPaddleHasTouch = false;
             // Calculate hit Factor
             float y = hitFactor(transform.position,
                                 col.transform.position,
@@ -68,6 +72,7 @@ public class BallControl : MonoBehaviour {
     }
     private void Update()
     {
+
         rb2d.velocity = rb2d.velocity.normalized * currentSpeed;
     }
     public void ShotBall(){
