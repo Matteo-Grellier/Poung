@@ -61,22 +61,26 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Player 1 Scored");
         Player1Score++;
+
+        ClientSend.SendPointScored(1);
         
         Player1Text.GetComponent<TextMeshProUGUI>().text = Player1Score.ToString();
     }
 
     public void Player2Scored()
     {
+        Debug.Log("Player 1 Scored");
         Player2Score++;
+
+        ClientSend.SendPointScored(2);
+
         Player2Text.GetComponent<TextMeshProUGUI>().text = Player2Score.ToString();
     }
 
     private void Update() 
     {
-
         EndGame();
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
+        if (Input.GetKeyDown(KeyCode.Escape)){
             Player2Score = 5;
         }
         if(Input.GetKeyDown(KeyCode.Space)){
@@ -90,6 +94,10 @@ public class GameManager : MonoBehaviour
     public void Launch()
     {
         ballController.ShotBall();
+    }
+    public void Launch(int _sideToLaunchTo) // to replace the one above
+    {
+        ballController.ShotBall(_sideToLaunchTo);
     }
 
     public void Reset()

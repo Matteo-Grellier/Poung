@@ -15,8 +15,6 @@ public class BallControl : MonoBehaviour {
     private float maxSpeed = 15f;
 
     public void ShotBall(){
-
-        
         // Debug.Log("Ball Launched");
         StartCoroutine(passiveMe(4));
         IEnumerator passiveMe(int secs)
@@ -34,13 +32,32 @@ public class BallControl : MonoBehaviour {
 
             if (gameManager.gameHasStarted == false)
             {
-                // Debug.Log("GAMMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 x = Random.Range(0, 2) == 0 ? 1 : -1;
                 gameManager.gameHasStarted = true;
             }
             
             rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, 0);
 
+            float step = currentSpeed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(x, 0, 0), step);
+        }
+    }
+    public void ShotBall(int _sideToLaunchTo){ // to replace the one above
+        StartCoroutine(passiveMe(4));
+        IEnumerator passiveMe(int secs)
+        {
+            yield return new WaitForSeconds(secs);
+            gameManager.ballTrail.Play();
+            
+            x = _sideToLaunchTo;
+
+            // sans utilité à partir du moment où gameHasStarted est allumé au début de la partie et plus jamais éteint 
+            // if (gameManager.gameHasStarted == false)
+            // {
+            //     gameManager.gameHasStarted = true;
+            // }
+
+            rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, 0);
             float step = currentSpeed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(x, 0, 0), step);
         }
@@ -53,7 +70,10 @@ public class BallControl : MonoBehaviour {
         gameManager.ball.transform.position = new Vector3(0, 0, 0);
         // gameManager.player1Paddle.transform.position = new Vector3(-8.27f, 0, 0);
         // gameManager.player2Paddle.transform.position = new Vector3(8.26f, 0, 0);
-        gameManager.Launch();
+        if (SceneManager.GetActiveScene().name != "PoungOnline")
+        {
+            gameManager.Launch();
+        }
     }
     private void Update() {
         rb2d.velocity = rb2d.velocity.normalized * currentSpeed;

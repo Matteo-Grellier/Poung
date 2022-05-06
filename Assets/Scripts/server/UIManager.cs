@@ -27,7 +27,10 @@ public class UIManager : MonoBehaviour
 
     public void ConnectToServer()
     {
-        Client.instance.ip = ipText.text;
+        if (ipText.text != "")
+        {
+            Client.instance.ip = ipText.text;
+        }
         startMenu.SetActive(false);
         usernameField.interactable = false;
         ipField.interactable = false;

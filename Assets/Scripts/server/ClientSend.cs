@@ -42,5 +42,15 @@ public class ClientSend : MonoBehaviour
             SendUDPData(_packet);
         }
     }
+
+    public static void SendPointScored(int _scoringPlayer)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.sendLastScoringPlayer)) 
+        { 
+            _packet.Write(_scoringPlayer);
+
+            SendTCPData(_packet);
+        }
+    }
     #endregion
 }

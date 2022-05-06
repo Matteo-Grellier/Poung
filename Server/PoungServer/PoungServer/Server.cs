@@ -130,8 +130,12 @@ namespace PoungServer
             {
                 { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
                 { (int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },
+                { (int)ClientPackets.sendLastScoringPlayer, ServerHandle.PointScoredReceived },
             };
             Console.WriteLine("Initialized packets.");
         }
+
+            
+
     }
 }
