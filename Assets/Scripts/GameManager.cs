@@ -108,14 +108,15 @@ public class GameManager : MonoBehaviour
 
     private void Start() 
     {
-        ballController = ball.GetComponent<BallControl>();
+         ballController = ball.GetComponent<BallControl>();
         ballTrail.Stop();
+        ballController.ResetAllPositions();
 
-        // stop particles from playing
-        if (SceneManager.GetActiveScene().name != "PoungOnline")
-        {
-            Launch();
-        }
+        // no need for launch in local beacause resetAllPosition as a launch
+        // if (SceneManager.GetActiveScene().name != "PoungOnline")
+        // {
+        //     Launch();
+        // }
 
         ballController = ball.GetComponent<BallControl>();
     }

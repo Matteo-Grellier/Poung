@@ -75,14 +75,18 @@ public class BallControl : MonoBehaviour {
             gameManager.Launch();
         }
     }
-    private void Update() {
+    private void Update() 
+    {
         rb2d.velocity = rb2d.velocity.normalized * currentSpeed;
     }
 
     private void FixedUpdate() {
         temps += Time.deltaTime;
         if(temps > 1f){
-            BallAcceleration();
+            if (GameManager.instance.gameHasStarted == true)
+            {
+                BallAcceleration();
+            }
             temps = 0;
         }
     }
@@ -148,5 +152,6 @@ public class BallControl : MonoBehaviour {
     private void Start() {
         goal = GameObject.Find("Player1Goal").GetComponent<Goal>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        rb2d = GameObject.Find("Ball").GetComponent<Rigidbody2D>();
     }
 }
