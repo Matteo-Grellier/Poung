@@ -52,7 +52,7 @@ namespace PoungServer
 
                 // Débute une opération de lecture asynchrone et apelle "ReceiveCallback" quand l'opération est terminée
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
-
+                
                 ServerSend.Welcome(id, "Welcome to the server !");
             }
 

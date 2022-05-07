@@ -51,11 +51,10 @@ public class BallControl : MonoBehaviour {
             
             x = _sideToLaunchTo;
 
-            // sans utilité à partir du moment où gameHasStarted est allumé au début de la partie et plus jamais éteint 
-            // if (gameManager.gameHasStarted == false)
-            // {
-            //     gameManager.gameHasStarted = true;
-            // }
+            if (gameManager.gameHasStarted == false)
+            {
+                gameManager.gameHasStarted = true;
+            }
 
             rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, 0);
             float step = currentSpeed * Time.deltaTime;

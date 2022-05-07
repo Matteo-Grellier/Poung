@@ -47,13 +47,19 @@ public class GameManager : MonoBehaviour
     {
         if (Player1Score == 5)
         {
-            SceneManager.LoadScene("VictoryOnline");
-            VictoryText = "Player 1 Wins!";
+            if (SceneManager.GetActiveScene().name != "PoungOnline" && SceneManager.GetActiveScene().name != "VictoryOnline")
+            {
+                SceneManager.LoadScene("VictoryOnline");
+                VictoryText = "Player 1 Wins!";
+            }
         }
         else if (Player2Score == 5)
         {
-            SceneManager.LoadScene("VictoryOnline");
-            VictoryText = "Player 2 Wins!";
+            if (SceneManager.GetActiveScene().name != "PoungOnline" && SceneManager.GetActiveScene().name != "VictoryOnline")
+            {
+                SceneManager.LoadScene("VictoryOnline");
+                VictoryText = "Player 2 Wins!";
+            }
         }
     }
 
@@ -74,6 +80,14 @@ public class GameManager : MonoBehaviour
 
         ClientSend.SendPointScored(2);
 
+        Player2Text.GetComponent<TextMeshProUGUI>().text = Player2Score.ToString();
+    }
+
+    public void SetScore(int _scoreP1, int _scoreP2)
+    {
+        Player1Score = _scoreP1;
+        Player2Score = _scoreP2;
+        Player1Text.GetComponent<TextMeshProUGUI>().text = Player1Score.ToString();
         Player2Text.GetComponent<TextMeshProUGUI>().text = Player2Score.ToString();
     }
 
@@ -108,7 +122,7 @@ public class GameManager : MonoBehaviour
 
     private void Start() 
     {
-         ballController = ball.GetComponent<BallControl>();
+        ballController = ball.GetComponent<BallControl>();
         ballTrail.Stop();
         ballController.ResetAllPositions();
 
@@ -138,10 +152,21 @@ public class GameManager : MonoBehaviour
 
     public void LaunchWin(int _winingPlayer)
     {
-
+        if (_winingPlayer == Client.instance.myId) // if is local player
+        {
+            // WiningScreen();
+            SceneManager.LoadScene("VictoryOnline");
+            VictoryText = "You won !";
+        }
+        else
+        {
+            // LoosingScreen();
+            SceneManager.LoadScene("VictoryOnline");
+            VictoryText = "You lost ...";
+        }   
     }
 
-    public void SpawnPlayer(int _id, string _username, Vector3 _position)
+    public void SpawnPlayer(int _id, string _username, Vector3 _position, int _sideToLaunchBall)
     {
         GameObject _player;
         if (_id == Client.instance.myId) // if is local player
@@ -151,13 +176,12 @@ public class GameManager : MonoBehaviour
         else
         {
             _player = Instantiate(playerPrefab, _position, new Quaternion(0, 0, 0, 0) );
-            Launch();
+            Launch(_sideToLaunchBall);
         }
 
         _player.GetComponent<PlayerManager>().id = _id;
         _player.GetComponent<PlayerManager>().username = _username;
         players.Add(_id, _player.GetComponent<PlayerManager>());
     }
-
     #endregion
 }
