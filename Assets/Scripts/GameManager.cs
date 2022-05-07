@@ -43,18 +43,17 @@ public class GameManager : MonoBehaviour
     public int Player1Score;
     public int Player2Score;
 
-    public static string VictoryText;
     public void EndGame()
     {
         if (Player1Score == 5)
         {
             SceneManager.LoadScene("VictoryOnline");
-            VictoryText = "Player 1 Wins!";
+            VictoryMsg.msg = "Player 1 Wins!";
         }
         else if (Player2Score == 5)
         {
             SceneManager.LoadScene("VictoryOnline");
-            VictoryText = "Player 2 Wins!";
+            VictoryMsg.msg = "Player 2 Wins!";
         }
     }
 
@@ -73,7 +72,7 @@ public class GameManager : MonoBehaviour
         EndGame();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Player2Score = 5;
+            Player1Score = 5;
         }
         if(Input.GetKeyDown(KeyCode.Space)){
             Reset();
