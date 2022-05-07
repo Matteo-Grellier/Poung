@@ -34,6 +34,13 @@ public class ClientHandle : MonoBehaviour
         GameManager.instance.Launch(_sideToLaunchTo);
     }
 
+    public static void Winning(Packet _packet)
+    {
+        int _winningPlayer = _packet.ReadInt();
+
+        GameManager.instance.LaunchWin(_winningPlayer);
+    }
+
     public static void PlayerPosition(Packet _packet)
     {
         int _id = _packet.ReadInt();

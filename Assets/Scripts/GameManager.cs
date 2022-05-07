@@ -136,6 +136,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void LaunchWin(int _winingPlayer)
+    {
+
+    }
+
     public void SpawnPlayer(int _id, string _username, Vector3 _position)
     {
         GameObject _player;

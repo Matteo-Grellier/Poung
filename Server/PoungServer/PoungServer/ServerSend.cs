@@ -98,6 +98,16 @@ namespace PoungServer
             }
         }
 
+        public static void SendWin(int _winingPlayer)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.sendWin))
+            {
+                _packet.Write(_winingPlayer);
+
+                SendTCPDataToAll(_packet);
+            }
+        }
+
         public static void PlayerPosition(Player _player)
         {
             using (Packet _packet = new Packet((int)ServerPackets.playerPosition)) 
