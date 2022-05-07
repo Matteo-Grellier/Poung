@@ -31,11 +31,17 @@ namespace PoungServer
             Vector2 _inputDirection = Vector2.Zero;
             if (inputs[0]) 
             {
-                _inputDirection.Y += 1;
+                if (position.Y < 4)
+                {
+                    _inputDirection.Y += 1;
+                }
             }
             if (inputs[1])
             {
-                _inputDirection.Y -= 1;
+                if (position.Y > -4)
+                {
+                    _inputDirection.Y -= 1;
+                }
             }
 
             Move(_inputDirection);

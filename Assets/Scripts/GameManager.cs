@@ -27,11 +27,11 @@ public class GameManager : MonoBehaviour
     public GameObject ball;
 
     [Header("Player 1")]
-    public GameObject player1Paddle;
+    // public GameObject player1Paddle;
     public GameObject player1Goal;
     public int paddleSpeed;
     [Header("AI")]
-    public GameObject player2Paddle;
+    // public GameObject player2Paddle;
     public GameObject player2Goal;
     public float aiSpeed;
 
@@ -57,18 +57,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void Player1Scored(){
+    public void Player1Scored()
+    {
         Debug.Log("Player 1 Scored");
         Player1Score++;
+
+        ClientSend.SendPointScored(1);
         
         Player1Text.GetComponent<TextMeshProUGUI>().text = Player1Score.ToString();
     }
-    public void Player2Scored(){
+
+    public void Player2Scored()
+    {
+        Debug.Log("Player 1 Scored");
         Player2Score++;
+
+        ClientSend.SendPointScored(2);
+
         Player2Text.GetComponent<TextMeshProUGUI>().text = Player2Score.ToString();
     }
-    private void Update() {
 
+    private void Update() 
+    {
         EndGame();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -81,21 +91,33 @@ public class GameManager : MonoBehaviour
             Reset();
         }
     }
-    public void Launch(){
+
+    public void Launch()
+    {
         ballController.ShotBall();
     }
+    public void Launch(int _sideToLaunchTo) // to replace the one above
+    {
+        ballController.ShotBall(_sideToLaunchTo);
+    }
 
-    public void Reset(){
+    public void Reset()
+    {
         ballTrail.Stop();
         ballController.ResetAllPositions();
     }
 
-    private void Start() {
-        ballController = ball.GetComponent<BallControl>();
+    private void Start() 
+    {
+         ballController = ball.GetComponent<BallControl>();
         ballTrail.Stop();
+        ballController.ResetAllPositions();
 
-        // stop particles from playing
-        Launch();
+        // no need for launch in local beacause resetAllPosition as a launch
+        // if (SceneManager.GetActiveScene().name != "PoungOnline")
+        // {
+        //     Launch();
+        // }
 
         ballController = ball.GetComponent<BallControl>();
     }
@@ -125,6 +147,7 @@ public class GameManager : MonoBehaviour
         else
         {
             _player = Instantiate(playerPrefab, _position, new Quaternion(0, 0, 0, 0) );
+            Launch();
         }
 
         _player.GetComponent<PlayerManager>().id = _id;

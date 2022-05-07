@@ -283,11 +283,12 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.welcome, ClientHandle.Welcome },
             { (int)ServerPackets.spawnPlayer, ClientHandle.SpawnPlayer },
             { (int)ServerPackets.playerPosition, ClientHandle.PlayerPosition },
+            { (int)ServerPackets.sendBallLaunch, ClientHandle.LaunchGame },
         };
         Debug.Log("Initialize packets.");
     }
 
-    private void Disconnect()
+    public void Disconnect()
     {
         if (isConnected)
         {

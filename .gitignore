@@ -61,3 +61,5 @@ sysinfo.txt
 crashlytics-build.properties
 
 /Assets/Resources
+Assets/Resources/BillingMode.json
+Assets/Resources/BillingMode.json.meta

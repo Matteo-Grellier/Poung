@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BallControl : MonoBehaviour {
     private GameManager gameManager;
@@ -27,9 +28,7 @@ public class BallControl : MonoBehaviour {
         {
             leftPaddleHasTouch = true;
             // Calculate hit Factor
-            float y = hitFactor(transform.position,
-                                col.transform.position,
-                                col.collider.bounds.size.y);
+            float y = hitFactor(transform.position, col.transform.position, col.collider.bounds.size.y);
 
             // Calculate direction, make length=1 via .normalized
             Vector2 dir = new Vector2(1, y).normalized;
@@ -43,15 +42,23 @@ public class BallControl : MonoBehaviour {
         {
             leftPaddleHasTouch = false;
             // Calculate hit Factor
-            float y = hitFactor(transform.position,
-                                col.transform.position,
-                                col.collider.bounds.size.y);
+            float y = hitFactor(transform.position, col.transform.position, col.collider.bounds.size.y);
 
             // Calculate direction, make length=1 via .normalized
             Vector2 dir = new Vector2(-1, y).normalized;
 
             // Set Velocity with dir * speed
             GetComponent<Rigidbody2D>().velocity = dir * currentSpeed;
+        }
+
+        float hitFactor(Vector2 ballPos, Vector2 racketPos, float racketHeight)  {
+                // ascii art:
+                // ||  1 <- at the top of the racket
+                // ||
+                // ||  0 <- at the middle of the racket
+                // ||
+                // || -1 <- at the bottom of the racket
+                return (ballPos.y - racketPos.y) / racketHeight;
         }
     }
 
@@ -61,22 +68,24 @@ public class BallControl : MonoBehaviour {
         rb2d = GetComponent<Rigidbody2D>();
     }
     
-    private void FixedUpdate()
-    {  
+    private void FixedUpdate() {
         temps += Time.deltaTime;
-        if (temps > 1f)
-        {
-            BallAcceleration();
+        if(temps > 1f){
+            if (GameManager.instance.gameHasStarted == true)
+            {
+                BallAcceleration();
+            }
             temps = 0;
         }
     }
-    private void Update()
-    {
 
+    private void Update() 
+    {
         rb2d.velocity = rb2d.velocity.normalized * currentSpeed;
     }
+
     public void ShotBall(){
-        Debug.Log("Ball Launched");
+        // Debug.Log("Ball Launched");
         StartCoroutine(passiveMe(4));
         IEnumerator passiveMe(int secs)
         {
@@ -90,44 +99,52 @@ public class BallControl : MonoBehaviour {
             {
                 x = 1;
             }
+
             if (gameManager.gameHasStarted == false)
             {
                 x = Random.Range(0, 2) == 0 ? 1 : -1;
                 gameManager.gameHasStarted = true;
             }
+            
             rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, 0);
 
             float step = currentSpeed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(x, 0, 0), step);
-
         }
-        
-        
     }
+    public void ShotBall(int _sideToLaunchTo){ // to replace the one above
+        StartCoroutine(passiveMe(4));
+        IEnumerator passiveMe(int secs)
+        {
+            yield return new WaitForSeconds(secs);
+            gameManager.ballTrail.Play();
+            
+            x = _sideToLaunchTo;
+
+            // sans utilité à partir du moment où gameHasStarted est allumé au début de la partie et plus jamais éteint 
+            // if (gameManager.gameHasStarted == false)
+            // {
+            //     gameManager.gameHasStarted = true;
+            // }
+
+            rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, 0);
+            float step = currentSpeed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(x, 0, 0), step);
+        }
+    }
+
     public void ResetAllPositions()
     {
         rb2d.velocity = Vector2.zero;
         currentSpeed = 2;
         gameManager.ball.transform.position = new Vector3(0, 0, 0);
-        gameManager.player1Paddle.transform.position = new Vector3(-8.27f, 0, 0);
-        gameManager.player2Paddle.transform.position = new Vector3(8.26f, 0, 0);
-        gameManager.Launch();
+        // gameManager.player1Paddle.transform.position = new Vector3(-8.27f, 0, 0);
+        // gameManager.player2Paddle.transform.position = new Vector3(8.26f, 0, 0);
+        if (SceneManager.GetActiveScene().name != "PoungOnline")
+        {
+            gameManager.Launch();
+        }
     }
-    
-
-    
-    
-    
-    float hitFactor(Vector2 ballPos, Vector2 racketPos,
-                float racketHeight) {
-    // ascii art:
-    // ||  1 <- at the top of the racket
-    // ||
-    // ||  0 <- at the middle of the racket
-    // ||
-    // || -1 <- at the bottom of the racket
-    return (ballPos.y - racketPos.y) / racketHeight;
-}
 
     private void BallAcceleration(){
         if(currentSpeed < gameManager.maxSpeed)
@@ -141,5 +158,4 @@ public class BallControl : MonoBehaviour {
         rb2d.velocity = rb2d.velocity.normalized * currentSpeed;
     }
 
-    
 }
