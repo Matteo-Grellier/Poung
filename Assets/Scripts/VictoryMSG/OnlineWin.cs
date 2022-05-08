@@ -13,9 +13,6 @@ public class OnlineWin : MonoBehaviour
         Debug.Log(VictoryMsg.msg);
         GetComponent<TextMeshProUGUI>().text = VictoryMsg.msg;
     }
-    public void BacktoMenu()
-    {
-    }
     // Update is called once per frame
     void Update()
     {

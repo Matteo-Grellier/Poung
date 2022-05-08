@@ -230,6 +230,33 @@ namespace PoungServer
                 }
             }
         }
+
+        public void SendLaunchGame(int _LastPlayerToScore)
+        {
+            int point;
+            if (_LastPlayerToScore == 1)
+            {
+                point = 1;
+            } 
+            else if (_LastPlayerToScore == 2)
+            {
+                point = -1;
+            }
+            else
+            {
+                Random rnd = new Random();
+                point  = rnd.Next(0, 2) == 0 ? 1 : -1; // entre 0 et 1 et si 0 devient -1
+            }
+
+            foreach (Client _client in Server.clients.Values)
+            {
+                if (_client.player != null)
+                {
+                    ServerSend.SendBall(_client.id, point);
+                }
+            }
+        }
+
         private void Disconnect()
         {
             Console.WriteLine($"{tcp.socket.Client.RemoteEndPoint} has diconnected");
