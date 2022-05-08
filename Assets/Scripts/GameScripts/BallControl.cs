@@ -86,7 +86,7 @@ public class BallControl : MonoBehaviour {
             gameManager.ballTrail.Play();
 
             x = _sideToLaunchTo;
-            // sans utilité à partir du moment où gameHasStarted est allumé au début de la partie et plus jamais éteint 
+            // sans utilitÃ© Ã  partir du moment oÃ¹ gameHasStarted est allumÃ© au dÃ©but de la partie et plus jamais Ã©teint 
             // if (gameManager.gameHasStarted == false)
             // {
             //     gameManager.gameHasStarted = true;
@@ -128,6 +128,19 @@ public class BallControl : MonoBehaviour {
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(x, 0, 0), step);
         }
     }
+    public void ShotBall(int _sideToLaunchTo){ // to replace the one above
+        StartCoroutine(passiveMe(4));
+        IEnumerator passiveMe(int secs)
+        {
+            yield return new WaitForSeconds(secs);
+            gameManager.ballTrail.Play();
+            
+            x = _sideToLaunchTo;
+
+            if (gameManager.gameHasStarted == false)
+            {
+                gameManager.gameHasStarted = true;
+            }
 
 
     public void ResetAllPositions()

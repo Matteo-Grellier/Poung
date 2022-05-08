@@ -46,6 +46,15 @@ namespace PoungServer
                 if (_idOfScoringPlayer == lastScoringPlayer)
                 {
                     goodPlayerToSend = _idOfScoringPlayer;
+
+                    if (_idOfScoringPlayer == 1)
+                    {
+                        GameLogic.scoreP1++;
+                    } 
+                    else if (_idOfScoringPlayer == 2)
+                    {
+                        GameLogic.scoreP2++;
+                    }
                 }
 
                 scoringPacketReiceived = 0;
