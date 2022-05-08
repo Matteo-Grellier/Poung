@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+
     public bool player1HasWin;
     public bool gameHasStarted = false;
     [Header("Particles")]
@@ -27,15 +28,15 @@ public class GameManager : MonoBehaviour
     public GameObject ball;
 
     [Header("Player 1")]
-    // public GameObject player1Paddle;
+    public GameObject player1Paddle;
     public GameObject player1Goal;
     public int paddleSpeed;
     [Header("AI")]
-    // public GameObject player2Paddle;
+    public GameObject player2Paddle;
     public GameObject player2Goal;
     public float aiSpeed;
 
- 
+
     [Header("Score UI")]
     public GameObject Player1Text;
     public GameObject Player2Text;

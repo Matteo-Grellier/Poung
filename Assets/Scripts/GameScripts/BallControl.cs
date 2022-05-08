@@ -62,13 +62,15 @@ public class BallControl : MonoBehaviour {
         }
     }
 
-    private void Start() {
+    private void Start()
+    {
         goal = GameObject.Find("Player1Goal").GetComponent<Goal>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         rb2d = GetComponent<Rigidbody2D>();
     }
-    
-    private void FixedUpdate() {
+
+    private void FixedUpdate()
+    {
         temps += Time.deltaTime;
         if(temps > 1f){
             if (GameManager.instance.gameHasStarted == true)
@@ -83,15 +85,37 @@ public class BallControl : MonoBehaviour {
     {
         rb2d.velocity = rb2d.velocity.normalized * currentSpeed;
     }
+    public void ShotBall(int _sideToLaunchTo)
+    { // to replace the one above
+        StartCoroutine(passiveMe(4));
+        IEnumerator passiveMe(int secs)
+        {
+            yield return new WaitForSeconds(secs);
+            gameManager.ballTrail.Play();
 
-    public void ShotBall(){
+            x = _sideToLaunchTo;
+            // sans utilit� � partir du moment o� gameHasStarted est allum� au d�but de la partie et plus jamais �teint 
+            // if (gameManager.gameHasStarted == false)
+            // {
+            //     gameManager.gameHasStarted = true;
+            // }
+            rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, 0);
+            float step = currentSpeed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(x, 0, 0), step);
+        }
+
+
+    }
+
+    public void ShotBall()
+    {
         // Debug.Log("Ball Launched");
         StartCoroutine(passiveMe(4));
         IEnumerator passiveMe(int secs)
         {
             yield return new WaitForSeconds(secs);
             gameManager.ballTrail.Play();
-            if(gameManager.player1HasWin == false)
+            if (gameManager.player1HasWin == false)
             {
                 x = -1;
             }
@@ -105,33 +129,14 @@ public class BallControl : MonoBehaviour {
                 x = Random.Range(0, 2) == 0 ? 1 : -1;
                 gameManager.gameHasStarted = true;
             }
-            
+
             rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, 0);
 
             float step = currentSpeed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(x, 0, 0), step);
         }
     }
-    public void ShotBall(int _sideToLaunchTo){ // to replace the one above
-        StartCoroutine(passiveMe(4));
-        IEnumerator passiveMe(int secs)
-        {
-            yield return new WaitForSeconds(secs);
-            gameManager.ballTrail.Play();
-            
-            x = _sideToLaunchTo;
 
-            // sans utilité à partir du moment où gameHasStarted est allumé au début de la partie et plus jamais éteint 
-            // if (gameManager.gameHasStarted == false)
-            // {
-            //     gameManager.gameHasStarted = true;
-            // }
-
-            rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, 0);
-            float step = currentSpeed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(x, 0, 0), step);
-        }
-    }
 
     public void ResetAllPositions()
     {
@@ -146,8 +151,9 @@ public class BallControl : MonoBehaviour {
         }
     }
 
-    private void BallAcceleration(){
-        if(currentSpeed < gameManager.maxSpeed)
+    private void BallAcceleration()
+    {
+        if (currentSpeed < gameManager.maxSpeed)
         {
             currentSpeed += accelerationRate;
         }
