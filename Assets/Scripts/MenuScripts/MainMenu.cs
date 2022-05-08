@@ -16,6 +16,7 @@ public class MainMenu : MonoBehaviour
     {
         
     }
+
     public void PlayGamevsBot()
     {
         SceneManager.LoadScene("PoungGameAI");
