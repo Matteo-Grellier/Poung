@@ -15,6 +15,7 @@ namespace PoungServer
 
         public static void Update()
         {
+
             // // protection contre le clients null après win
             // Console.WriteLine($"###: Gamemanager verif of clients count  = {Server.clients.Count}");
             // if (Server.clients.Count != 0)

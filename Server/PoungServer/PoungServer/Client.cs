@@ -41,6 +41,8 @@ namespace PoungServer
 
             public void Connect(TcpClient _socket)
             {
+                Console.WriteLine($"() Client.cs TCP Connect()");
+
                 socket = _socket;   // renseigne le socket
                 socket.ReceiveBufferSize = dataBufferSize;  // renseigne la taille du buffer
                 socket.SendBufferSize = dataBufferSize;     // renseigne la taille du buffer
@@ -58,6 +60,8 @@ namespace PoungServer
 
             public void SendData(Packet _packet)
             {
+                Console.WriteLine($"() Client.cs TCP SendData()");
+
                 try
                 {
                     if (socket != null)
@@ -73,12 +77,16 @@ namespace PoungServer
 
             private void ReceiveCallback(IAsyncResult _result)
             {
+                Console.WriteLine($"() Client.cs TCP ReceiveCallback()");
+
                 // // protection contre le client vide
                 // if (Server.clients.Count != 0)
                 // {
-                    try
-                    {
+                try
+                {
                         int _byteLenght = stream.EndRead(_result); // Attend que la requête asynchrone en attente se termine
+                        Console.WriteLine($"() Client.cs TCP ReceiveCallback( lenght : {_byteLenght} )");
+
                         if ( _byteLenght <= 0) // si "_byteLenght" est vide : disconnect
                         {
                             Server.clients[id].Disconnect();
@@ -87,6 +95,12 @@ namespace PoungServer
 
                         byte[] _data = new byte[_byteLenght];
                         Array.Copy(receiveBuffer, _data, _byteLenght);  // met les infos reçus dans "_data"
+
+                        foreach (byte dat in _data)
+                        {
+                            Console.WriteLine($"() Client.cs TCP ReceiveCallback( data : {dat} )");
+                        }
+
 
                         receiveData.Reset(HandleData(_data));
 
@@ -105,6 +119,8 @@ namespace PoungServer
 
             private bool HandleData(byte[] _data)
             {
+                Console.WriteLine($"() Client.cs TCP HandleData()");
+
                 int _packetLenght = 0;
 
                 receiveData.SetBytes(_data);
@@ -152,6 +168,8 @@ namespace PoungServer
 
             public void Disconnect()
             {
+                Console.WriteLine($"() Client.cs TCP Disconnect()");
+
                 socket.Close();
                 stream = null;
                 receiveData = null;
@@ -174,16 +192,22 @@ namespace PoungServer
 
             public void Connect(IPEndPoint _endPoint)
             {
+                Console.WriteLine($"() Client.cs UDP Connect()");
+
                 endPoint = _endPoint;
             }
 
             public void SendData(Packet _packet)
             {
+                Console.WriteLine($"() Client.cs UDP SendData()");
+
                 Server.SendUDPData(endPoint, _packet);
             }
 
             public void HandleData(Packet _packetData)
             {
+                Console.WriteLine($"() Client.cs UDP HandleData()");
+
                 int _packetLength = _packetData.ReadInt();
                 byte[] _packetBytes = _packetData.ReadBytes(_packetLength);
 
@@ -199,12 +223,16 @@ namespace PoungServer
 
             public void Disconnect()
             {
+                Console.WriteLine($"() Client.cs UDP Disconnect()");
+
                 endPoint = null;
             }
         }
 
         public void SendIntoGame(string _playerName) 
         {
+            Console.WriteLine($"() Client.cs SendIntoGame()");
+
             if ( id == 1)
             {
                 player = new Player(id, _playerName, new Vector3(-8.27f, 0, 0)); // player 1 donc à gauche
@@ -236,6 +264,7 @@ namespace PoungServer
 
         public void SendLaunchGame(int _LastPlayerToScore)
         {
+            Console.WriteLine($"() Client.cs SendLaunchGame()");
             int point;
             if (_LastPlayerToScore == 1)
             {
@@ -262,6 +291,8 @@ namespace PoungServer
 
         private void Disconnect()
         {
+            Console.WriteLine($"() Client.cs Disconnect()");
+
             Console.WriteLine($"{tcp.socket.Client.RemoteEndPoint} has diconnected");
 
             if (GameLogic.numberOfPlayerConnected > 0)

@@ -24,6 +24,8 @@ namespace PoungServer
 
         public static void Start(int _maxPlayer, int _port )
         {
+            Console.WriteLine($"() Server.cs Start()");
+
             MaxPlayers = _maxPlayer;
             Port = _port;
 
@@ -44,6 +46,8 @@ namespace PoungServer
 
         private static void TCPConnectCallback(IAsyncResult _result)
         {
+            Console.WriteLine($"() Server.cs TCPConnectCallback()");
+
             // quand une tentative de connexion réussi, renseigne le cleint dans un nouveau TcpClient
             TcpClient _client = tcpListener.EndAcceptTcpClient(_result);
 
@@ -66,7 +70,9 @@ namespace PoungServer
 
         private static void UDPReceiveCallback(IAsyncResult _result)
         {
-            try 
+            Console.WriteLine($"() Server.cs UDPReceiveCallback()");
+
+            try
             { 
                 IPEndPoint _clientEndPoint = new IPEndPoint(IPAddress.Any, 0);
                 byte[] _data = udpListener.EndReceive(_result, ref _clientEndPoint);
@@ -111,6 +117,8 @@ namespace PoungServer
 
         public static void SendUDPData(IPEndPoint _clientEndPoint, Packet _packet)
         {
+            Console.WriteLine($"() Server.cs SendUDPData()");
+
             try
             {
                 if (_clientEndPoint != null)
@@ -126,6 +134,8 @@ namespace PoungServer
 
         private static void InitializeServerData() // créé une instance pour chaque joueurs en fonction du nombre max de joueurs
         {
+            Console.WriteLine($"() Server.cs InitializeServerData()");
+
             for (int i = 1; i <= MaxPlayers; i++)
             {
                 clients.Add(i, new Client(i));

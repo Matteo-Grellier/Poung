@@ -15,6 +15,8 @@ namespace PoungServer
 
         public static void WelcomeReceived(int _fromClient, Packet _packet)
         {
+            Console.WriteLine($"() ServerHandle.cs WelcomeReceived()");
+
             int _clientIdCheck = _packet.ReadInt();
             string _username = _packet.ReadString();
 
@@ -32,6 +34,8 @@ namespace PoungServer
 
         public static void PointScoredReceived(int _fromClient, Packet _packet)
         {
+            Console.WriteLine($"() ServerHandle.cs PointScoredReceived()");
+
             int _idOfScoringPlayer = _packet.ReadInt();
 
             Console.WriteLine($" client {_fromClient} says that the player {_idOfScoringPlayer} scored !");
@@ -70,6 +74,8 @@ namespace PoungServer
 
         public static void PlayerMovement(int _fromClient, Packet _packet)
         {
+            Console.WriteLine($"() ServerHandle.cs PlayerMovement()");
+
             bool[] _inputs = new bool[_packet.ReadInt()];
             for (int i = 0; i < _inputs.Length; i++)
             {

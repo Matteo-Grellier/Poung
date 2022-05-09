@@ -206,7 +206,8 @@ public class Client : MonoBehaviour
             socket.Connect(endPoint);
             socket.BeginReceive(ReceiveCallback, null);
 
-            using ( Packet _packet = new Packet())
+            // to change
+            using ( Packet _packet = new Packet((int)ClientPackets.playerMovement))
             {
                 SendData(_packet);
             }
