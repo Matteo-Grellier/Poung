@@ -567,7 +567,7 @@ MonoBehaviour:
   paddleSpeed: 10
   player2Paddle: {fileID: 1278287425}
   player2Goal: {fileID: 2013435285}
-  aiSpeed: 10
+  aiSpeed: 2
   Player1Text: {fileID: 1265528438}
   Player2Text: {fileID: 179796460}
   Player1Score: 0

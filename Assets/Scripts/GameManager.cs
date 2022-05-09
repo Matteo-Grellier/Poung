@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
             }
             else if (SceneManager.GetActiveScene().name == "PoungGame2Players")
             {
-                VictoryMsg.msg = "Player 1 Wins!";
+                VictoryMsg.msg = "Player 1 Win!";
                 SceneManager.LoadScene("Victory");
             }
         }
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
             }
             else if (SceneManager.GetActiveScene().name == "PoungGame2Players")
             {
-                VictoryMsg.msg = "Player 2 Wins!";
+                VictoryMsg.msg = "Player 2 Win!";
                 SceneManager.LoadScene("Victory");
             }
         }
