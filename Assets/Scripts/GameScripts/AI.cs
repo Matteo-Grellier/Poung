@@ -6,12 +6,13 @@ public class AI : MonoBehaviour
 {
     private GameManager gameManager;
     private Rigidbody2D rb2d;
-
+    private BallControl ballControl;
     private float boundY = 4.5f;
 
     // Start is called before the first frame update
     void Start()
     {
+        ballControl = GameObject.Find("Ball").GetComponent<BallControl>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         rb2d = GetComponent<Rigidbody2D>();
     }
@@ -20,7 +21,7 @@ public class AI : MonoBehaviour
     void Update()
     {
         Debug.Log(Mathf.Abs(gameManager.ball.transform.position.y-transform.position.y) > 1 && Mathf.Abs(gameManager.ball.transform.position.y-transform.position.y) < 1.5);
-        if(gameManager.ball.transform.position.x > 5)
+        if(ballControl.leftPaddleHasTouch)
         {
             moveAI();
         

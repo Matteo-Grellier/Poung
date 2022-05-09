@@ -12,7 +12,9 @@ using UnityEngine;
     {
         welcome = 1,
         spawnPlayer,
-        playerPosition
+        playerPosition,
+        sendBallLaunch,
+        sendWin
 
     }
 
@@ -20,7 +22,8 @@ using UnityEngine;
     public enum ClientPackets
     {
         welcomeReceived = 1,
-        playerMovement
+        playerMovement,
+        sendLastScoringPlayer
 
     }
 

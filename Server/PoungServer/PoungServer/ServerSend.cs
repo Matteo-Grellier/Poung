@@ -83,8 +83,32 @@ namespace PoungServer
                 _packet.Write(_player.id);
                 _packet.Write(_player.username);
                 _packet.Write(_player.position);
+                Random rnd = new Random();
+                _packet.Write( rnd.Next(0, 2) == 0 ? 1 : -1 );
 
                 SendTCPData(_toClient, _packet); // on utilise tcp parce que ça arrive qu'une fois et dcp on veut pas perdre le packet
+            }
+        }
+
+        public static void SendBall(int _toClient, int _point)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.sendBallLaunch)) // créé un packet sendBallLaunch
+            {
+                _packet.Write(_point);
+                _packet.Write(GameLogic.scoreP1);
+                _packet.Write(GameLogic.scoreP2);
+
+                SendTCPData(_toClient, _packet); // on utilise tcp parce que ça arrive qu'une fois et dcp on veut pas perdre le packet
+            }
+        }
+
+        public static void SendWin(int _winingPlayer)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.sendWin))
+            {
+                _packet.Write(_winingPlayer);
+
+                SendTCPDataToAll(_packet);
             }
         }
 

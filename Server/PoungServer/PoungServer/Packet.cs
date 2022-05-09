@@ -16,7 +16,9 @@ namespace PoungServer
     {
         welcome = 1,
         spawnPlayer,
-        playerPosition
+        playerPosition,
+        sendBallLaunch,
+        sendWin
 
     }
 
@@ -24,7 +26,8 @@ namespace PoungServer
     public enum ClientPackets
     {
         welcomeReceived = 1,
-        playerMovement
+        playerMovement,
+        sendLastScoringPlayer
 
     }
 
