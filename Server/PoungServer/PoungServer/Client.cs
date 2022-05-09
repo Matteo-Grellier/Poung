@@ -87,19 +87,19 @@ namespace PoungServer
                         int _byteLenght = stream.EndRead(_result); // Attend que la requête asynchrone en attente se termine
                         Console.WriteLine($"() Client.cs TCP ReceiveCallback( lenght : {_byteLenght} )");
 
-                        if ( _byteLenght <= 0) // si "_byteLenght" est vide : disconnect
-                        {
-                            Server.clients[id].Disconnect();
-                            return;
-                        }
+                        //if ( _byteLenght <= 0) // si "_byteLenght" est vide : disconnect
+                        //{
+                        //    Server.clients[id].Disconnect();
+                        //    return;
+                        //}
 
                         byte[] _data = new byte[_byteLenght];
                         Array.Copy(receiveBuffer, _data, _byteLenght);  // met les infos reçus dans "_data"
 
-                        foreach (byte dat in _data)
-                        {
-                            Console.WriteLine($"() Client.cs TCP ReceiveCallback( data : {dat} )");
-                        }
+                        //foreach (byte dat in _data)
+                        //{
+                        //    Console.WriteLine($"() Client.cs TCP ReceiveCallback( data : {dat} )");
+                        //}
 
 
                         receiveData.Reset(HandleData(_data));
