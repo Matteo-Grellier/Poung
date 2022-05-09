@@ -35,7 +35,7 @@ namespace PoungServer
                 scoreP2 = 0;
                 numberOfPlayerConnected = 0;
                 Console.WriteLine($" numberOfPlayerConnected = {GameLogic.numberOfPlayerConnected}");
-                // Server.clients.Clear();
+                 Server.clients.Clear();
             }
             else if (scoreP2 == 5)
             {
@@ -44,7 +44,7 @@ namespace PoungServer
                 scoreP2 = 0;
                 numberOfPlayerConnected = 0;
                 Console.WriteLine($" numberOfPlayerConnected = {GameLogic.numberOfPlayerConnected}");
-                // Server.clients.Clear();
+                 Server.clients.Clear();
             }
 
             // }

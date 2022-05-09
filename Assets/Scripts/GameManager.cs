@@ -191,7 +191,7 @@ public class GameManager : MonoBehaviour
         {
             // WiningScreen();
             Client.instance.Disconnect();
-            // players.Clear();
+            players.Clear();
 
             
             VictoryMsg.msg = "You won !";
@@ -201,7 +201,7 @@ public class GameManager : MonoBehaviour
         {
             // LoosingScreen();
             Client.instance.Disconnect();
-            // players.Clear();
+            players.Clear();
 
             
             VictoryMsg.msg = "You loose ...";
