@@ -209,6 +209,9 @@ public class Client : MonoBehaviour
             // to change
             using ( Packet _packet = new Packet((int)ClientPackets.playerMovement))
             {
+                _packet.Write(1);
+                
+                _packet.WriteLength();
                 SendData(_packet);
             }
         }
