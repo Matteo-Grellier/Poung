@@ -284,6 +284,7 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.spawnPlayer, ClientHandle.SpawnPlayer },
             { (int)ServerPackets.playerPosition, ClientHandle.PlayerPosition },
             { (int)ServerPackets.sendBallLaunch, ClientHandle.LaunchGame },
+            { (int)ServerPackets.sendWin, ClientHandle.Winning },
         };
         Debug.Log("Initialize packets.");
     }

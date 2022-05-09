@@ -18,6 +18,9 @@ namespace PoungServer
             int _clientIdCheck = _packet.ReadInt();
             string _username = _packet.ReadString();
 
+            GameLogic.numberOfPlayerConnected++;
+            Console.WriteLine($" numberOfPlayerConnected = {GameLogic.numberOfPlayerConnected}");
+
             Console.WriteLine($"{Server.clients[_fromClient].tcp.socket.Client.RemoteEndPoint} connected successfully and is now player {_fromClient}.");
             if (_fromClient != _clientIdCheck)
             {
@@ -46,6 +49,15 @@ namespace PoungServer
                 if (_idOfScoringPlayer == lastScoringPlayer)
                 {
                     goodPlayerToSend = _idOfScoringPlayer;
+
+                    if (_idOfScoringPlayer == 1)
+                    {
+                        GameLogic.scoreP1++;
+                    } 
+                    else if (_idOfScoringPlayer == 2)
+                    {
+                        GameLogic.scoreP2++;
+                    }
                 }
 
                 scoringPacketReiceived = 0;
@@ -63,7 +75,11 @@ namespace PoungServer
                 _inputs[i] = _packet.ReadBool();
             }
 
-            Server.clients[_fromClient].player.SetInput(_inputs);
+            // pour eviter le crash
+            if (GameLogic.numberOfPlayerConnected == 1 || GameLogic.numberOfPlayerConnected == 2)
+            { 
+                Server.clients[_fromClient].player.SetInput(_inputs);
+            }
         }
 
     }

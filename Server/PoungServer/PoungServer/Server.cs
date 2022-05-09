@@ -86,16 +86,21 @@ namespace PoungServer
                         return;
                     }
 
-                    if (clients[_clientId].udp.endPoint == null)
-                    {
-                        clients[_clientId].udp.Connect(_clientEndPoint);
-                        return;
-                    }
 
-                    if (clients[_clientId].udp.endPoint.ToString() == _clientEndPoint.ToString() )
-                    {
-                        clients[_clientId].udp.HandleData(_packet);
-                    }
+                    // // ajouté par moi pour tester un truc probablement pas necessaire
+                    // if (clients.Count != 0)
+                    // {
+                        if (clients[_clientId].udp.endPoint == null)
+                        {
+                            clients[_clientId].udp.Connect(_clientEndPoint);
+                            return;
+                        }
+
+                        if (clients[_clientId].udp.endPoint.ToString() == _clientEndPoint.ToString() )
+                        {
+                            clients[_clientId].udp.HandleData(_packet);
+                        }
+                    // }
                 }
             }
             catch (Exception _ex)

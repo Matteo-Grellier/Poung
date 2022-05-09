@@ -44,52 +44,96 @@ public class GameManager : MonoBehaviour
     public int Player1Score;
     public int Player2Score;
 
+    public static string VictoryText;
+
     public void EndGame()
     {
         if (Player1Score == 5)
         {
-            SceneManager.LoadScene("VictoryOnline");
-            VictoryMsg.msg = "Player 1 Wins!";
+            if (SceneManager.GetActiveScene().name == "PoungGameAI")
+            {
+                VictoryMsg.msg = "You win !";
+                SceneManager.LoadScene("Victory");
+            }
+            else if (SceneManager.GetActiveScene().name == "PoungGame2Players")
+            {
+                VictoryMsg.msg = "Player 1 Wins!";
+                SceneManager.LoadScene("Victory");
+            }
         }
         else if (Player2Score == 5)
         {
-            SceneManager.LoadScene("VictoryOnline");
-            VictoryMsg.msg = "Player 2 Wins!";
+            if (SceneManager.GetActiveScene().name == "PoungGameAI")
+            {
+                VictoryMsg.msg = "You loose...";
+                SceneManager.LoadScene("Victory");
+            }
+            else if (SceneManager.GetActiveScene().name == "PoungGame2Players")
+            {
+                VictoryMsg.msg = "Player 2 Wins!";
+                SceneManager.LoadScene("Victory");
+            }
         }
     }
 
     public void Player1Scored()
     {
         Debug.Log("Player 1 Scored");
-        Player1Score++;
 
-        ClientSend.SendPointScored(1);
+        if (SceneManager.GetActiveScene().name == "PoungOnline")
+        {
+            ClientSend.SendPointScored(1);
+        }
         
-        Player1Text.GetComponent<TextMeshProUGUI>().text = Player1Score.ToString();
+        if (SceneManager.GetActiveScene().name != "PoungOnline")
+        {
+            Player1Score++;
+            Player1Text.GetComponent<TextMeshProUGUI>().text = Player1Score.ToString();
+        }
     }
 
     public void Player2Scored()
     {
         Debug.Log("Player 1 Scored");
-        Player2Score++;
 
-        ClientSend.SendPointScored(2);
+        if (SceneManager.GetActiveScene().name == "PoungOnline")
+        {
+            ClientSend.SendPointScored(2);
+        }
 
+        if (SceneManager.GetActiveScene().name != "PoungOnline")
+        {
+            Player2Score++;
+            Player2Text.GetComponent<TextMeshProUGUI>().text = Player2Score.ToString();
+        }
+    }
+
+    public void SetScore(int _scoreP1, int _scoreP2)
+    {
+        Player1Score = _scoreP1;
+        Player2Score = _scoreP2;
+        Player1Text.GetComponent<TextMeshProUGUI>().text = Player1Score.ToString();
         Player2Text.GetComponent<TextMeshProUGUI>().text = Player2Score.ToString();
     }
 
     private void Update() 
     {
+        // to removed
+        Debug.Log(players.Count);
+
         EndGame();
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (SceneManager.GetActiveScene().name != "PoungOnline")
         {
-            Player1Score = 5;
-        }
-        if(Input.GetKeyDown(KeyCode.Space)){
-            Reset();
-        }
-        if(Input.GetKeyDown(KeyCode.R)){
-            Reset();
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Player1Score = 5;
+            }
+            if(Input.GetKeyDown(KeyCode.Space)){
+                Reset();
+            }
+            if(Input.GetKeyDown(KeyCode.R)){
+                Reset();
+            }
         }
     }
 
@@ -110,15 +154,18 @@ public class GameManager : MonoBehaviour
 
     private void Start() 
     {
-         ballController = ball.GetComponent<BallControl>();
+        // to removed
+        Debug.Log(players.Count);
+
+        ballController = ball.GetComponent<BallControl>();
         ballTrail.Stop();
-        ballController.ResetAllPositions();
+        // ballController.ResetAllPositions();
 
         // no need for launch in local beacause resetAllPosition as a launch
-        // if (SceneManager.GetActiveScene().name != "PoungOnline")
-        // {
-        //     Launch();
-        // }
+        if (SceneManager.GetActiveScene().name != "PoungOnline")
+        {
+            Launch();
+        }
 
         ballController = ball.GetComponent<BallControl>();
     }
@@ -138,22 +185,60 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SpawnPlayer(int _id, string _username, Vector3 _position)
+    public void LaunchWin(int _winingPlayer)
+    {
+        if (_winingPlayer == Client.instance.myId) // if is local player
+        {
+            // WiningScreen();
+            players.Clear();
+            Client.instance.Disconnect();
+            
+            VictoryMsg.msg = "You won !";
+            SceneManager.LoadScene("VictoryOnline");
+        }
+        else
+        {
+            // LoosingScreen();
+            players.Clear();
+            Client.instance.Disconnect();
+            
+            VictoryMsg.msg = "You loose ...";
+            SceneManager.LoadScene("VictoryOnline");
+        }   
+    }
+
+    public void SpawnPlayer(int _id, string _username, Vector3 _position, int _sideToLaunchBall)
     {
         GameObject _player;
         if (_id == Client.instance.myId) // if is local player
         {
             _player = Instantiate(localPlayerPrefab, _position, new Quaternion(0, 0, 0, 0) );
+            SetBallControlNames(_id, true);
         }
         else
         {
             _player = Instantiate(playerPrefab, _position, new Quaternion(0, 0, 0, 0) );
-            Launch();
+            Launch(_sideToLaunchBall);
+            SetBallControlNames(_id, false);
         }
 
         _player.GetComponent<PlayerManager>().id = _id;
         _player.GetComponent<PlayerManager>().username = _username;
         players.Add(_id, _player.GetComponent<PlayerManager>());
+    }
+
+    private void SetBallControlNames(int _id, bool isLocal)
+    {
+        if (_id == 1 && isLocal == true)
+        {
+            ballController.namePlayer1 = "LocalPlayer(Clone)";
+            ballController.namePlayer2 = "Player(Clone)";
+        }
+        else if (_id == 2 && isLocal == true)
+        {
+            ballController.namePlayer1 = "Player(Clone)";
+            ballController.namePlayer2 = "LocalPlayer(Clone)";
+        }
     }
 
     #endregion

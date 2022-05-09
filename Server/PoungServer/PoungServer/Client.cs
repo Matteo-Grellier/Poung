@@ -52,7 +52,7 @@ namespace PoungServer
 
                 // Débute une opération de lecture asynchrone et apelle "ReceiveCallback" quand l'opération est terminée
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
-
+                
                 ServerSend.Welcome(id, "Welcome to the server !");
             }
 
@@ -73,30 +73,34 @@ namespace PoungServer
 
             private void ReceiveCallback(IAsyncResult _result)
             {
-                try
-                {
-                    int _byteLenght = stream.EndRead(_result); // Attend que la requête asynchrone en attente se termine
-                    if ( _byteLenght <= 0) // si "_byteLenght" est vide : disconnect
+                // // protection contre le client vide
+                // if (Server.clients.Count != 0)
+                // {
+                    try
                     {
-                        Server.clients[id].Disconnect();
-                        return;
+                        int _byteLenght = stream.EndRead(_result); // Attend que la requête asynchrone en attente se termine
+                        if ( _byteLenght <= 0) // si "_byteLenght" est vide : disconnect
+                        {
+                            Server.clients[id].Disconnect();
+                            return;
+                        }
+
+                        byte[] _data = new byte[_byteLenght];
+                        Array.Copy(receiveBuffer, _data, _byteLenght);  // met les infos reçus dans "_data"
+
+                        receiveData.Reset(HandleData(_data));
+
+                        // Débute une opération de lecture asynchrone et apelle "ReceiveCallback" quand l'opération est terminée ( recommence quoi )
+                        stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
+
                     }
+                    catch (Exception _ex)
+                    {
+                        Console.WriteLine($"Error, receiving TCP data : {_ex}");
+                        Server.clients[id].Disconnect();
 
-                    byte[] _data = new byte[_byteLenght];
-                    Array.Copy(receiveBuffer, _data, _byteLenght);  // met les infos reçus dans "_data"
-
-                    receiveData.Reset(HandleData(_data));
-
-                    // Débute une opération de lecture asynchrone et apelle "ReceiveCallback" quand l'opération est terminée ( recommence quoi )
-                    stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
-
-                }
-                catch (Exception _ex)
-                {
-                    Console.WriteLine($"Error, receiving TCP data : {_ex}");
-                    Server.clients[id].Disconnect();
-
-                }
+                    }
+                // }
             }
 
 
@@ -260,6 +264,14 @@ namespace PoungServer
         private void Disconnect()
         {
             Console.WriteLine($"{tcp.socket.Client.RemoteEndPoint} has diconnected");
+
+            if (GameLogic.numberOfPlayerConnected > 0)
+            { 
+                GameLogic.numberOfPlayerConnected--;
+                Console.WriteLine($" numberOfPlayerConnected = {GameLogic.numberOfPlayerConnected}");
+            }
+
+            //SendWin()
 
             player = null;
 

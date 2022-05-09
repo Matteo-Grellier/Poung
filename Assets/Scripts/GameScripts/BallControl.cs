@@ -14,8 +14,36 @@ public class BallControl : MonoBehaviour {
     public bool leftPaddleHasTouch = false;
     private float accelerationRate = 0.5f;
 
+    public string namePlayer1 = "Player1";
+    public string namePlayer2 = "Player2";
+
+    private void Start()
+    {
+        goal = GameObject.Find("Player1Goal").GetComponent<Goal>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        rb2d = GetComponent<Rigidbody2D>();
+    }
+
+    private void Update() 
+    {
+        rb2d.velocity = rb2d.velocity.normalized * currentSpeed;
+    }
+
+    private void FixedUpdate()
+    {
+        temps += Time.deltaTime;
+        if(temps > 1f){
+            if (GameManager.instance.gameHasStarted == true)
+            {
+                BallAcceleration();
+            }
+            temps = 0;
+        }
+    }
+
     void OnCollisionEnter2D(Collision2D col)
     {
+        Debug.Log(namePlayer1 + " and " + namePlayer2);
         // Note: 'col' holds the collision information. If the
         // Ball collided with a racket, then:
         //   col.gameObject is the racket
@@ -24,8 +52,9 @@ public class BallControl : MonoBehaviour {
 
         // Hit the left Racket?
         //MainCamera.GetComponent<RipplePostProcessor>().ShockWave();
-        if (col.gameObject.name == "Player1")
+        if (col.gameObject.name == namePlayer1)
         {
+            Debug.Log("Collision with : " + namePlayer1 );
             leftPaddleHasTouch = true;
             // Calculate hit Factor
             float y = hitFactor(transform.position, col.transform.position, col.collider.bounds.size.y);
@@ -38,8 +67,9 @@ public class BallControl : MonoBehaviour {
         }
 
         // Hit the right Racket?
-        if (col.gameObject.name == "Player2")
+        if (col.gameObject.name == namePlayer2)
         {
+            Debug.Log("Collision with : " + namePlayer2 );
             leftPaddleHasTouch = false;
             // Calculate hit Factor
             float y = hitFactor(transform.position, col.transform.position, col.collider.bounds.size.y);
@@ -60,51 +90,6 @@ public class BallControl : MonoBehaviour {
                 // || -1 <- at the bottom of the racket
                 return (ballPos.y - racketPos.y) / racketHeight;
         }
-    }
-
-    private void Start()
-    {
-        goal = GameObject.Find("Player1Goal").GetComponent<Goal>();
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        rb2d = GetComponent<Rigidbody2D>();
-    }
-
-    private void FixedUpdate()
-    {
-        temps += Time.deltaTime;
-        if(temps > 1f){
-            if (GameManager.instance.gameHasStarted == true)
-            {
-                BallAcceleration();
-            }
-            temps = 0;
-        }
-    }
-
-    private void Update() 
-    {
-        rb2d.velocity = rb2d.velocity.normalized * currentSpeed;
-    }
-    public void ShotBall(int _sideToLaunchTo)
-    { // to replace the one above
-        StartCoroutine(passiveMe(4));
-        IEnumerator passiveMe(int secs)
-        {
-            yield return new WaitForSeconds(secs);
-            gameManager.ballTrail.Play();
-
-            x = _sideToLaunchTo;
-            // sans utilit� � partir du moment o� gameHasStarted est allum� au d�but de la partie et plus jamais �teint 
-            // if (gameManager.gameHasStarted == false)
-            // {
-            //     gameManager.gameHasStarted = true;
-            // }
-            rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, 0);
-            float step = currentSpeed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(x, 0, 0), step);
-        }
-
-
     }
 
     public void ShotBall()
@@ -136,7 +121,26 @@ public class BallControl : MonoBehaviour {
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(x, 0, 0), step);
         }
     }
+    public void ShotBall(int _sideToLaunchTo) // online version
+    {
+        StartCoroutine(passiveMe(4));
+        IEnumerator passiveMe(int secs)
+        {
+            yield return new WaitForSeconds(secs);
+            gameManager.ballTrail.Play();
+            
+            x = _sideToLaunchTo;
 
+            if (gameManager.gameHasStarted == false)
+            {
+                gameManager.gameHasStarted = true;
+            }
+
+            rb2d.velocity = (Vector2.one.normalized * currentSpeed) * new Vector2(x, 0);
+            float step = currentSpeed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(x, 0, 0), step);
+        }
+    }
 
     public void ResetAllPositions()
     {

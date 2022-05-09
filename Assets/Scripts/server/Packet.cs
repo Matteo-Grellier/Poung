@@ -13,7 +13,8 @@ using UnityEngine;
         welcome = 1,
         spawnPlayer,
         playerPosition,
-        sendBallLaunch
+        sendBallLaunch,
+        sendWin
 
     }
 
