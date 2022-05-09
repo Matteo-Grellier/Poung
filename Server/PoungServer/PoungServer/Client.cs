@@ -81,7 +81,6 @@ namespace PoungServer
                         int _byteLenght = stream.EndRead(_result); // Attend que la requête asynchrone en attente se termine
                         if ( _byteLenght <= 0) // si "_byteLenght" est vide : disconnect
                         {
-                            Console.WriteLine($"### bro t'es un bon gros malade mais hahah là on est sensé être deco");
                             Server.clients[id].Disconnect();
                             return;
                         }
