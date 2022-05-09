@@ -190,8 +190,9 @@ public class GameManager : MonoBehaviour
         if (_winingPlayer == Client.instance.myId) // if is local player
         {
             // WiningScreen();
-            players.Clear();
             Client.instance.Disconnect();
+            players.Clear();
+
             
             VictoryMsg.msg = "You won !";
             SceneManager.LoadScene("VictoryOnline");
@@ -199,8 +200,9 @@ public class GameManager : MonoBehaviour
         else
         {
             // LoosingScreen();
-            players.Clear();
             Client.instance.Disconnect();
+            players.Clear();
+
             
             VictoryMsg.msg = "You loose ...";
             SceneManager.LoadScene("VictoryOnline");
